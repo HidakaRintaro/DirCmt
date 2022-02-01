@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Footer } from "../components/Footer";
 import { Heading } from "../components/Heading";
 
 const Home: NextPage = () => {
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
         <Heading title="DirCmt" />
       </header>
       <main className="container mx-auto bg-gray-50"></main>
+      <Footer />
     </div>
   );
 };
