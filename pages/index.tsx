@@ -1,8 +1,8 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { DirSection } from "../components/DirSection";
-import { Footer } from "../components/Footer";
-import { Heading } from "../components/Heading";
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { DirSection } from '~/components/DirSection'
+import { Footer } from '~/components/Footer'
+import { Heading } from '~/components/Heading'
 
 const Home: NextPage = () => {
   return (
@@ -15,14 +15,14 @@ const Home: NextPage = () => {
       <header className="mt-2 text-center">
         <Heading title="DirCmt" />
       </header>
-      <main className="container mx-auto max-w-5xl mt-6">
+      <main className="container mx-auto mt-6 max-w-5xl">
         <div>
           <DirSection />
         </div>
       </main>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
