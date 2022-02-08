@@ -1,6 +1,6 @@
-import { FileAddIcon } from '../icons/FileAddIcon'
-import { FolderAddIcon } from '../icons/FolderAddIcon'
-import { Button } from './IconButton'
+import { FileAddIcon } from '~/icons/FileAddIcon'
+import { FolderAddIcon } from '~/icons/FolderAddIcon'
+import { Button } from '~/components/IconButton'
 
 interface DirSectionProps {}
 
