@@ -6,7 +6,9 @@ interface DirSectionProps {}
 
 export const DirSection: React.FC<DirSectionProps> = (props) => {
   return (
-    <div className="mx-auto  h-96 divide-y-2 divide-gray-300 rounded-lg bg-white py-2 px-4  drop-shadow-lg">
+    <div
+      className={`mx-auto mb-8 h-96 divide-y-2 divide-gray-300 rounded-lg bg-white py-2  px-4 drop-shadow-lg`}
+    >
       <div className="mb-2 flex gap-3">
         <Button
           icon={<FolderAddIcon className="stroke-white stroke-2" />}
