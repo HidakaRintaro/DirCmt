@@ -7,7 +7,7 @@ interface DirSectionProps {}
 export const DirSection: React.FC<DirSectionProps> = (props) => {
   return (
     <div className="drop-shadow-lg  py-2 px-4 h-96 divide-y-2 divide-gray-300 bg-white rounded-lg  mx-auto">
-      <div className="flex gap-2 mb-2">
+      <div className="flex gap-3 mb-2">
         <Button
           icon={<FolderAddIcon className="stroke-white stroke-2" />}
           value="Folder"
