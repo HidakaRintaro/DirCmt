@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { DirSection } from 'components/DirSection'
 import { Footer } from 'components/Footer'
 import { Heading } from 'components/Heading'
+import { PreviewSection } from 'components/PreviewSection'
 
 const Home: NextPage = () => {
   return (
@@ -18,6 +19,7 @@ const Home: NextPage = () => {
       <main className="container mx-auto mt-6 max-w-5xl">
         <div>
           <DirSection />
+          <PreviewSection />
         </div>
       </main>
       <Footer />
