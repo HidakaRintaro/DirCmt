@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { DirSection } from '~/components/DirSection'
-import { Footer } from '~/components/Footer'
-import { Heading } from '~/components/Heading'
+import { DirSection } from 'components/DirSection'
+import { Footer } from 'components/Footer'
+import { Heading } from 'components/Heading'
 
 const Home: NextPage = () => {
   return (
