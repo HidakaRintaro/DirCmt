@@ -1,16 +1,16 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
 interface FooterProps {
-  children?: ReactNode
+  children?: ReactNode;
 }
 
 export const Footer: React.FC<FooterProps> = ({ children }) => {
   return (
-    <footer className="border-t-2 bg-gray-100">
+    <footer className="bg-gray-100 border-t-2">
       {children}
-      <p className="py-4 text-center">
+      <p className="text-center py-4">
         <small>&copy; 2022 HidakaRintaro</small>
       </p>
     </footer>
-  )
-}
+  );
+};
