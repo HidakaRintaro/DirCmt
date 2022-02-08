@@ -15,8 +15,8 @@ const Home: NextPage = () => {
       <header className="mt-2 text-center">
         <Heading title="DirCmt" />
       </header>
-      <main>
-        <div className="container mx-auto">
+      <main className="container mx-auto max-w-5xl mt-6">
+        <div>
           <DirSection />
         </div>
       </main>

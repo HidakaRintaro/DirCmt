@@ -1,11 +1,10 @@
-import { NextPage } from "next";
 import { ReactNode } from "react";
 
 interface FooterProps {
   children?: ReactNode;
 }
 
-export const Footer: NextPage<FooterProps> = ({ children }) => {
+export const Footer: React.FC<FooterProps> = ({ children }) => {
   return (
     <footer className="bg-gray-100 border-t-2">
       {children}
