@@ -15,6 +15,28 @@ const Home: NextPage = () => {
           content="ディレクトリ構成にコメントを振ることができるツールです。"
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:url" content="https://dircmt.vercel.app/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="DirCmt" />
+        <meta
+          property="og:description"
+          content="ディレクトリ構成にコメントを振ることができるツールです。"
+        />
+        <meta property="og:site_name" content="DirCmt" />
+        <meta
+          property="og:image"
+          content="https://dircmt.vercel.app/facebook.png"
+        />
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:site" content="@HidakaRintaro" />
+        <meta
+          property="twitter:description"
+          content="ディレクトリ構成にコメントを振ることができるツールです。"
+        />
+        <meta
+          property="twitter:image:src"
+          content="https://dircmt.vercel.app/twitter.png"
+        />
       </Head>
       <header className="mt-2 text-center">
         <Heading title="DirCmt" />
