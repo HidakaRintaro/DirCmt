@@ -9,6 +9,8 @@ export const DirTable: React.FC = () => {
     ary.push({ id: i, name: '' })
   }
   const [check, setCheck] = useState(false)
+  const [fileName, setFileName] = useState(false)
+  const [comment, setComment] = useState(false)
   return (
     <table className="w-full">
       {ary.map((a) => (
@@ -28,10 +30,37 @@ export const DirTable: React.FC = () => {
               <span>
                 <FileIcon className="h-5 w-5 stroke-black stroke-2" />
               </span>
-              {a.id}
+              <div>
+                {fileName ? (
+                  <input
+                    onKeyPress={() => setFileName(false)}
+                    value={a.id}
+                    className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+                  ></input>
+                ) : (
+                  <span
+                    className="pl-[5px]"
+                    onDoubleClick={() => setFileName(true)}
+                  >
+                    {a.id}
+                  </span>
+                )}
+              </div>
             </div>
           </td>
-          <td className="rounded-r-md pl-2">{a.id}</td>
+          <td className="rounded-r-md px-2">
+            {comment ? (
+              <input
+                onKeyPress={() => setComment(false)}
+                value={a.id}
+                className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+              ></input>
+            ) : (
+              <span className="pl-[5px]" onDoubleClick={() => setComment(true)}>
+                {a.id}
+              </span>
+            )}
+          </td>
         </tr>
       ))}
     </table>
