@@ -15,7 +15,7 @@ export const PreviewSection: React.FC = () => {
         />
       </div>
       <div className="relative">
-        <div className="absolute top-1 right-1 z-50">
+        <div className="absolute top-1 right-0 z-50">
           <CopyButton text={samplePreview} />
         </div>
         <pre className="flex-1 overflow-scroll px-2 font-mono text-gray-100">
