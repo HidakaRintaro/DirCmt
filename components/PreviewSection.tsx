@@ -1,5 +1,6 @@
 import { Button } from 'components/Button'
 import { DownloadIcon } from 'icons/DownloadIcon'
+import { CopyButton } from 'components/CopyButton'
 
 export const PreviewSection: React.FC = () => {
   const samplePreview =
@@ -13,9 +14,14 @@ export const PreviewSection: React.FC = () => {
           size="auto"
         />
       </div>
-      <pre className="flex-1 overflow-scroll px-2 font-mono text-gray-100">
-        {samplePreview}
-      </pre>
+      <div className="relative">
+        <div className="absolute top-1 right-1 z-50">
+          <CopyButton text={samplePreview} />
+        </div>
+        <pre className="flex-1 overflow-scroll px-2 font-mono text-gray-100">
+          {samplePreview}
+        </pre>
+      </div>
     </div>
   )
 }
