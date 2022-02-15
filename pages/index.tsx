@@ -7,7 +7,7 @@ import { PreviewSection } from 'components/PreviewSection'
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <Head>
         <title>DirCmt</title>
         <meta
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
       <header className="mt-2 text-center">
         <Heading title="DirCmt" />
       </header>
-      <main className="container mx-auto mt-6 max-w-5xl">
+      <main className="container mx-auto mt-6 max-w-5xl flex-1">
         <div>
           <DirSection />
           <PreviewSection />
