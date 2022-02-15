@@ -1,6 +1,7 @@
 import { Button } from 'components/Button'
 import { DownloadIcon } from 'icons/DownloadIcon'
 import { CopyButton } from 'components/CopyButton'
+import { Tooltip } from 'components/Tooltip'
 
 export const PreviewSection: React.FC = () => {
   const samplePreview =
@@ -14,9 +15,14 @@ export const PreviewSection: React.FC = () => {
           size="auto"
         />
       </div>
-      <div className="relative">
-        <div className="absolute top-1 right-0 z-50">
-          <CopyButton text={samplePreview} />
+      <div className="group relative">
+        <div className="absolute top-1 right-0 z-50 flex items-center gap-2">
+          <div className="hidden group-hover:block">
+            <Tooltip text="コピーしました" />
+          </div>
+          <div className="hidden group-hover:block">
+            <CopyButton text={samplePreview} />
+          </div>
         </div>
         <pre className="flex-1 overflow-scroll px-2 font-mono text-gray-100">
           {samplePreview}
