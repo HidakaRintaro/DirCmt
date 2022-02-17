@@ -1,17 +1,15 @@
 import { DirTableRow } from 'components/DirTableRow'
+import { dirCmtJson } from 'utils/mock/dirCmtJson'
 
 export const DirTable: React.FC = () => {
   // TODO: 仮データ、後データ
-  let ary = []
-  for (let i = 1; i < 100; i++) {
-    ary.push({ id: i, name: '' })
-  }
-
+  const data = dirCmtJson
   return (
     <table className="w-full">
-      {ary.map((a) => (
-        <DirTableRow key={a.id} rowData={a} />
-      ))}
+      <DirTableRow
+        row={{ name: 'root', type: 'directory', children: dirCmtJson }}
+        depth={0}
+      />
     </table>
   )
 }
