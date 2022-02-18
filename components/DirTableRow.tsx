@@ -27,7 +27,9 @@ const DirTdName: React.FC<DirTdNameProps> = ({ type, name, depth, state }) => {
     <td className="h-8 w-40 rounded-l-md border-r-2 border-gray-200 pl-1">
       <div className="flex items-center gap-[2px]">
         <span style={{ width: 12 * depth + 'px' }}></span>
-        {type === 'directory' && (
+        {type === 'file' ? (
+          <span className="w-5"></span>
+        ) : (
           <span
             className="cursor-pointer rounded-sm p-1 hover:bg-gray-300"
             onClick={() => setIsOpen(!isOpen)}
@@ -90,7 +92,6 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
   const { row, depth } = props
   const [opened, setOpened] = useState(false)
 
-  const [fileName, setFileName] = useState(false)
   return (
     <>
       <tr className={`even:bg-orange-100`}>
