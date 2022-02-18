@@ -4,9 +4,32 @@ import { FolderIcon } from 'icons/FolderIcon'
 import { useState } from 'react'
 import { DirCmt } from 'types/dirCmt'
 
+interface DirTdCommentProps {
+  comment: string
+}
+
 interface DirTableRowProps {
   row: DirCmt
   depth: number
+}
+
+const DirTdComment: React.FC<DirTdCommentProps> = ({ comment }) => {
+  const [isComment, setIsComment] = useState(false)
+  return (
+    <td className="rounded-r-md px-2">
+      {isComment ? (
+        <input
+          onKeyPress={() => setIsComment(false)}
+          value={comment ?? ''}
+          className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+        ></input>
+      ) : (
+        <span className="pl-[5px]" onDoubleClick={() => setIsComment(true)}>
+          {comment ?? ''}
+        </span>
+      )}
+    </td>
+  )
 }
 
 export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
@@ -14,8 +37,6 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
   const [opened, setOpened] = useState(false)
 
   const [fileName, setFileName] = useState(false)
-  const [comment, setComment] = useState(false)
-
   return (
     <>
       <tr className={`even:bg-orange-100`}>
@@ -53,19 +74,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
             </div>
           </div>
         </td>
-        <td className="rounded-r-md px-2">
-          {comment ? (
-            <input
-              onKeyPress={() => setComment(false)}
-              value={row.comment ?? ''}
-              className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-            ></input>
-          ) : (
-            <span className="pl-[5px]" onDoubleClick={() => setComment(true)}>
-              {row.comment ?? ''}
-            </span>
-          )}
-        </td>
+        <DirTdComment comment={row.comment ?? ''} />
       </tr>
       {opened &&
         (row.children ?? []).map((child) => {
@@ -97,22 +106,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
                     </div>
                   </div>
                 </td>
-                <td className="rounded-r-md px-2">
-                  {comment ? (
-                    <input
-                      onKeyPress={() => setComment(false)}
-                      value={child.comment ?? ''}
-                      className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-                    ></input>
-                  ) : (
-                    <span
-                      className="pl-[5px]"
-                      onDoubleClick={() => setComment(true)}
-                    >
-                      {child.comment ?? ''}
-                    </span>
-                  )}
-                </td>
+                <DirTdComment comment={child.comment ?? ''} />
               </tr>
             )
           } else {
