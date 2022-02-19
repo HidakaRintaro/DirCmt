@@ -15,7 +15,7 @@ export const PreviewSection: React.FC = () => {
           size="auto"
         />
       </div>
-      <div className="group relative">
+      <div className="group relative h-full">
         <div className="absolute top-1 right-0 z-50 flex items-center gap-2">
           <div className="hidden group-hover:block">
             <Tooltip text="コピーしました" />
@@ -24,7 +24,7 @@ export const PreviewSection: React.FC = () => {
             <CopyButton text={samplePreview} />
           </div>
         </div>
-        <pre className="flex-1 overflow-scroll px-2 font-mono text-gray-100">
+        <pre className="h-full flex-1 overflow-scroll px-2 font-mono text-gray-100">
           {samplePreview}
         </pre>
       </div>

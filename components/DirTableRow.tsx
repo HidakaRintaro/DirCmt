@@ -26,9 +26,9 @@ const DirTdName: React.FC<DirTdNameProps> = ({ type, name, depth, state }) => {
   return (
     <td className="h-8 w-40 rounded-l-md border-r-2 border-gray-200 pl-1">
       <div className="flex items-center gap-[2px]">
-        <span style={{ width: 12 * depth + 'px' }}></span>
+        <span style={{ paddingLeft: 12 * depth + 'px' }}></span>
         {type === 'file' ? (
-          <span className="w-5"></span>
+          <span className="pl-5"></span>
         ) : (
           <span
             className="cursor-pointer rounded-sm p-1 hover:bg-gray-300"
@@ -94,7 +94,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
 
   return (
     <>
-      <tr className={`even:bg-orange-100`}>
+      <tr className="hover:bg-orange-100">
         <DirTdName
           type="directory"
           name={row.name}
@@ -107,7 +107,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
         (row.children ?? []).map((child) => {
           if (child.type === 'file') {
             return (
-              <tr className="even:bg-orange-100">
+              <tr className="hover:bg-orange-100">
                 <DirTdName
                   type="file"
                   name={child.name}
