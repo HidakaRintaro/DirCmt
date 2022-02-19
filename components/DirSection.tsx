@@ -1,7 +1,7 @@
 import { FileAddIcon } from 'icons/FileAddIcon'
 import { FolderAddIcon } from 'icons/FolderAddIcon'
 import { Button } from 'components/Button'
-import { DirTable } from './DirTable'
+import { DirList } from './DirList'
 
 interface DirSectionProps {}
 
@@ -21,7 +21,7 @@ export const DirSection: React.FC<DirSectionProps> = (props) => {
         />
       </div>
       <div className="flex-1 overflow-auto">
-        <DirTable />
+        <DirList />
       </div>
     </div>
   )
