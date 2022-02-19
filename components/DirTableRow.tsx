@@ -94,7 +94,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
 
   return (
     <>
-      <tr>
+      <tr className="hover:bg-orange-100">
         <DirTdName
           type="directory"
           name={row.name}
@@ -107,7 +107,7 @@ export const DirTableRow: React.FC<DirTableRowProps> = (props) => {
         (row.children ?? []).map((child) => {
           if (child.type === 'file') {
             return (
-              <tr>
+              <tr className="hover:bg-orange-100">
                 <DirTdName
                   type="file"
                   name={child.name}
