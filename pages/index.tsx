@@ -41,7 +41,7 @@ const Home: NextPage = () => {
       <header className="mt-2 text-center">
         <Heading title="DirCmt" />
       </header>
-      <main className="container mx-auto mt-3 max-w-5xl flex-1 sm:mt-6">
+      <main className="container mx-auto mt-3 max-w-[90%] flex-1 sm:mt-6 lg:max-w-5xl">
         <div>
           <DirSection />
           <PreviewSection />
