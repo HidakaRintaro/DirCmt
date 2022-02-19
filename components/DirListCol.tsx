@@ -1,6 +1,8 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { isOpenState } from 'store/atoms/uiDirList/isOpenAtom'
 import { DirCmt } from 'types/dirCmt'
 
 interface DirListColNameProps {
@@ -24,17 +26,20 @@ interface DirListColProps {
 
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name, depth, path } = props
+  const [isOpen, setIsOpen] = useRecoilState(isOpenState(path))
   return (
     <div className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100">
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
       {type === 'file' ? (
         <div className="pl-5" />
       ) : (
-        <span className="cursor-pointer rounded-sm p-1 hover:bg-gray-300">
+        <span
+          className="cursor-pointer rounded-sm p-1 hover:bg-gray-300"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <ChevronIcon
             className={`h-3 w-3 stroke-black stroke-2 text-center ${
-              // isOpen ? 'origin-center rotate-90' : ''
-              ''
+              isOpen ? 'origin-center rotate-90' : ''
             }`}
           />
         </span>
@@ -89,6 +94,7 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 
 export const DirListCol: React.FC<DirListColProps> = (props) => {
   const { type, data, path, depth } = props
+  const isOpen = useRecoilValue(isOpenState(path + data.name + '/'))
   return (
     <>
       {type === 'name' ? (
@@ -104,7 +110,7 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
           path={path + data.name + '/'}
         />
       )}
-      {true &&
+      {isOpen &&
         (data.children ?? []).map((child, index) => {
           return child.type === 'file' ? (
             type === 'name' ? (
