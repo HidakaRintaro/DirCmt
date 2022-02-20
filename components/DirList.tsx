@@ -1,12 +1,17 @@
 import { dirCmtJson } from 'utils/mock/dirCmtJson'
-import { Divider, SplitPaneLeft, SplitPaneRight } from 'components/SplitPane'
+import {
+  Divider,
+  SplitPane,
+  SplitPaneLeft,
+  SplitPaneRight,
+} from 'components/SplitPane'
 import { DirListCol } from 'components/DirListCol'
 
 export const DirList: React.FC = () => {
   // TODO: 仮データ、後データ
   const data = dirCmtJson
   return (
-    <div className="flex h-full w-full">
+    <SplitPane>
       <SplitPaneLeft>
         {dirCmtJson.map((dirCmt, index) => (
           <DirListCol
@@ -30,6 +35,6 @@ export const DirList: React.FC = () => {
           />
         ))}
       </SplitPaneRight>
-    </div>
+    </SplitPane>
   )
 }

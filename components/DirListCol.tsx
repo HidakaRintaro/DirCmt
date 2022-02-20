@@ -72,7 +72,6 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { comment, path } = props
-  console.log('cnt:', path)
   return (
     <div className="flex h-8 w-full items-center rounded-r-md px-2 hover:bg-orange-100 ">
       {
