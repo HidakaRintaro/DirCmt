@@ -31,7 +31,7 @@ export const Divider: React.FC = () => {
   const { onMouseHoldDown } = useContext(SplitPaneContext)
   return (
     <div
-      className="cursor-col-resize border-[1px] border-gray-200"
+      className="w-[5px] cursor-col-resize bg-gray-200 hover:bg-orange-100 active:bg-orange-100"
       onMouseDown={onMouseHoldDown}
     />
   )
