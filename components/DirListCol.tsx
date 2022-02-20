@@ -1,7 +1,12 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
-import { ChangeEventHandler, KeyboardEventHandler, useEffect } from 'react'
+import {
+  ChangeEventHandler,
+  FocusEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+} from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { commentState } from 'store/atoms/uiDirList/commentAtom'
 import { isEditState } from 'store/atoms/uiDirList/isEditAtom'
@@ -38,7 +43,10 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
   }
-
+  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
+    // TODO: 名前が空の場合は保存できないのでエラーを表示する
+    setIsEdit(false)
+  }
   const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
     setName(event.target.value)
   }
@@ -80,7 +88,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
           <input
             value={name}
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-            onBlur={() => setIsEdit(false)}
+            onBlur={handleBlurEdit}
             onChange={handleChangeName}
           />
         ) : (
@@ -100,7 +108,9 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
   }
-
+  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
+    setIsEdit(false)
+  }
   const handleChangeComment: ChangeEventHandler<HTMLInputElement> = (event) => {
     setComment(event.target.value)
   }
@@ -119,7 +129,7 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
         <input
           value={comment}
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-          onBlur={() => setIsEdit(false)}
+          onBlur={handleBlurEdit}
           onChange={handleChangeComment}
         />
       ) : (
