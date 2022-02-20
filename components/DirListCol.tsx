@@ -44,12 +44,14 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
           />
         </span>
       )}
-      {type === 'file' ? (
-        <FileIcon className="h-5 w-5 stroke-black stroke-2" />
-      ) : (
-        <FolderIcon className="h-5 w-5 stroke-black stroke-2" />
-      )}
-      <div>
+      <span className="max-w-[20px]">
+        {type === 'file' ? (
+          <FileIcon className="h-5 w-5 stroke-black stroke-2" />
+        ) : (
+          <FolderIcon className="h-5 w-5 stroke-black stroke-2" />
+        )}
+      </span>
+      <div className="overflow-hidden overflow-ellipsis">
         {
           /*isEdit*/ false ? (
             <input
