@@ -1,10 +1,8 @@
 import {
   createContext,
   createRef,
-  Dispatch,
   MouseEventHandler,
   ReactNode,
-  SetStateAction,
   useContext,
   useEffect,
   useRef,
@@ -31,7 +29,7 @@ export const Divider: React.FC = () => {
   const { onMouseHoldDown } = useContext(SplitPaneContext)
   return (
     <div
-      className="w-[5px] cursor-col-resize bg-gray-200 hover:bg-orange-100 active:bg-orange-100"
+      className="w-[5px] flex-none cursor-col-resize bg-gray-200 hover:bg-orange-100 active:bg-orange-100"
       onMouseDown={onMouseHoldDown}
     />
   )
@@ -60,7 +58,12 @@ export const SplitPaneLeft: React.FC<SplitPaneLeftProps> = ({ children }) => {
 }
 
 export const SplitPaneRight: React.FC<SplitPaneRightProps> = ({ children }) => {
-  return <div className="flex-1 overflow-x-hidden">{children}</div>
+  const { clientWidth } = useContext(SplitPaneContext)
+  return (
+    <div style={{ width: `calc(100% - ${clientWidth}px - 5px)` }}>
+      <div className="overflow-x-auto overflow-y-visible">{children}</div>
+    </div>
+  )
 }
 
 export const SplitPane: React.FC<{ children: ReactNode }> = ({ children }) => {
