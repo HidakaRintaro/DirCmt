@@ -36,7 +36,6 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key !== 'Enter') return
-    console.log('enter down')
     setIsEdit(true)
   }
 
@@ -77,11 +76,10 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
           <input
             value={name}
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+            onBlur={() => setIsEdit(false)}
           />
         ) : (
-          <span className="pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/>
-            {name}
-          </span>
+          <span className="pl-[5px]">{name}</span>
         )}
       </div>
     </div>
@@ -95,7 +93,6 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key !== 'Enter') return
-    console.log('enter down')
     setIsEdit(true)
   }
 
@@ -110,16 +107,12 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     >
       {isEdit ? (
         <input
-          // onKeyPress={() => setIsEdit(false)}
           value={comment}
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+          onBlur={() => setIsEdit(false)}
         />
       ) : (
-        <span
-          className="min-w-0 pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/
-        >
-          {comment}
-        </span>
+        <span className="min-w-0 pl-[5px]">{comment}</span>
       )}
     </div>
   )
