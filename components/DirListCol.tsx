@@ -6,6 +6,7 @@ import {
   FocusEventHandler,
   KeyboardEventHandler,
   useEffect,
+  useRef,
 } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { commentState } from 'store/atoms/uiDirList/commentAtom'
@@ -38,10 +39,14 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const [isOpen, setIsOpen] = useRecoilState(isOpenState(path))
   const [isEdit, setIsEdit] = useRecoilState(isEditState('name:' + path))
   const [name, setName] = useRecoilState(nameState(path))
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
+    event.currentTarget.blur()
+    // TODO: フォーカスが当たらない
+    inputRef.current?.focus()
   }
   const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
     // TODO: 名前が空の場合は保存できないのでエラーを表示する
@@ -90,6 +95,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
             onBlur={handleBlurEdit}
             onChange={handleChangeName}
+            ref={inputRef}
           />
         ) : (
           <span className="pl-[5px]">{name}</span>
@@ -103,10 +109,14 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { comment: nowComment, path } = props
   const [isEdit, setIsEdit] = useRecoilState(isEditState('comment:' + path))
   const [comment, setComment] = useRecoilState(commentState(path))
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
+    event.currentTarget.blur()
+    // TODO: フォーカスが当たらない
+    inputRef.current?.focus()
   }
   const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
     setIsEdit(false)
@@ -131,6 +141,7 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
           onBlur={handleBlurEdit}
           onChange={handleChangeComment}
+          ref={inputRef}
         />
       ) : (
         <span className="min-w-0 pl-[5px]">{comment}</span>
