@@ -1,8 +1,11 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
+import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { commentState } from 'store/atoms/uiDirList/commentAtom'
 import { isOpenState } from 'store/atoms/uiDirList/isOpenAtom'
+import { nameState } from 'store/atoms/uiDirList/nameAtom'
 import { DirCmt } from 'types/dirCmt'
 
 interface DirListColNameProps {
@@ -25,8 +28,13 @@ interface DirListColProps {
 }
 
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
-  const { type, name, depth, path } = props
+  const { type, name: nowName, depth, path } = props
   const [isOpen, setIsOpen] = useRecoilState(isOpenState(path))
+  const [name, setName] = useRecoilState(nameState(path))
+  useEffect(() => {
+    setName(nowName)
+  })
+
   return (
     <div className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100">
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
@@ -73,7 +81,11 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 }
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
-  const { comment, path } = props
+  const { comment: nowComment, path } = props
+  const [comment, setComment] = useRecoilState(commentState(path))
+  useEffect(() => {
+    setComment(nowComment)
+  })
   return (
     <div className="flex h-8 w-full items-center overflow-x-scroll whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100 ">
       {
@@ -95,7 +107,8 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 
 export const DirListCol: React.FC<DirListColProps> = (props) => {
   const { type, data, path, depth } = props
-  const isOpen = useRecoilValue(isOpenState(path + data.name + '/'))
+  const herePath = path + data.name + '/'
+  const isOpen = useRecoilValue(isOpenState(herePath))
   return (
     <>
       {type === 'name' ? (
@@ -103,13 +116,10 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
           name={data.name}
           type={data.type}
           depth={depth}
-          path={path + data.name + '/'}
+          path={herePath}
         />
       ) : (
-        <DirListColComment
-          comment={data.comment ?? ''}
-          path={path + data.name + '/'}
-        />
+        <DirListColComment comment={data.comment ?? ''} path={herePath} />
       )}
       {isOpen &&
         (data.children ?? []).map((child, index) => {
@@ -120,13 +130,13 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
                 name={child.name}
                 type={child.type}
                 depth={depth + 1}
-                path={path + child.name + '/'}
+                path={herePath + child.name + '/'}
               />
             ) : (
               <DirListColComment
                 key={index}
                 comment={child.comment ?? ''}
-                path={path + child.name + '/'}
+                path={herePath + child.name + '/'}
               />
             )
           ) : (
@@ -135,7 +145,7 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
               type={type}
               data={child}
               depth={depth + 1}
-              path={path + data.name + '/'}
+              path={herePath}
             />
           )
         })}
