@@ -92,7 +92,7 @@ export const SplitPane: React.FC<{ children: ReactNode }> = ({ children }) => {
   })
 
   return (
-    <div className="flex h-full w-full">
+    <div className="mt-[1px] flex h-full w-full">
       <SplitPaneContext.Provider
         value={{ clientWidth, setClientWidth, onMouseHoldDown }}
       >
