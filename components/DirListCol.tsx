@@ -1,7 +1,7 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
-import { KeyboardEventHandler, useEffect } from 'react'
+import { ChangeEventHandler, KeyboardEventHandler, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { commentState } from 'store/atoms/uiDirList/commentAtom'
 import { isEditState } from 'store/atoms/uiDirList/isEditAtom'
@@ -39,9 +39,13 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setIsEdit(true)
   }
 
+  const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setName(event.target.value)
+  }
+
   useEffect(() => {
     setName(nowName)
-  })
+  }, [])
 
   return (
     <div
@@ -77,6 +81,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
             value={name}
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
             onBlur={() => setIsEdit(false)}
+            onChange={handleChangeName}
           />
         ) : (
           <span className="pl-[5px]">{name}</span>
@@ -96,9 +101,14 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     setIsEdit(true)
   }
 
+  const handleChangeComment: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setComment(event.target.value)
+  }
+
   useEffect(() => {
     setComment(nowComment)
-  })
+  }, [])
+
   return (
     <div
       className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
@@ -110,6 +120,7 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
           value={comment}
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
           onBlur={() => setIsEdit(false)}
+          onChange={handleChangeComment}
         />
       ) : (
         <span className="min-w-0 pl-[5px]">{comment}</span>
