@@ -1,9 +1,10 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
-import { useEffect } from 'react'
+import { KeyboardEventHandler, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { commentState } from 'store/atoms/uiDirList/commentAtom'
+import { isEditState } from 'store/atoms/uiDirList/isEditAtom'
 import { isOpenState } from 'store/atoms/uiDirList/isOpenAtom'
 import { nameState } from 'store/atoms/uiDirList/nameAtom'
 import { DirCmt } from 'types/dirCmt'
@@ -30,13 +31,25 @@ interface DirListColProps {
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name: nowName, depth, path } = props
   const [isOpen, setIsOpen] = useRecoilState(isOpenState(path))
+  const [isEdit, setIsEdit] = useRecoilState(isEditState('name:' + path))
   const [name, setName] = useRecoilState(nameState(path))
+
+  const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key !== 'Enter') return
+    console.log('enter down')
+    setIsEdit(true)
+  }
+
   useEffect(() => {
     setName(nowName)
   })
 
   return (
-    <div className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100">
+    <div
+      className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
+      onKeyDown={handleKeyPressEdit}
+      tabIndex={-1}
+    >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
       {type === 'file' ? (
         <div className="pl-5" />
@@ -60,21 +73,16 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
         )}
       </span>
       <div className="overflow-hidden overflow-ellipsis">
-        {
-          /*isEdit*/ false ? (
-            <input
-              // onKeyPress={() => setIsEdit(false)}
-              value={name}
-              className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-            />
-          ) : (
-            <span
-              className="pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/
-            >
-              {name}
-            </span>
-          )
-        }
+        {isEdit ? (
+          <input
+            value={name}
+            className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+          />
+        ) : (
+          <span className="pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/>
+            {name}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -82,25 +90,37 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { comment: nowComment, path } = props
+  const [isEdit, setIsEdit] = useRecoilState(isEditState('comment:' + path))
   const [comment, setComment] = useRecoilState(commentState(path))
+
+  const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key !== 'Enter') return
+    console.log('enter down')
+    setIsEdit(true)
+  }
+
   useEffect(() => {
     setComment(nowComment)
   })
   return (
-    <div className="flex h-8 w-full items-center overflow-x-scroll whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100 ">
-      {
-        /*isEdit*/ false ? (
-          <input
-            // onKeyPress={() => setIsEdit(false)}
-            value={comment}
-            className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-          />
-        ) : (
-          <span className="pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/>
-            {comment}
-          </span>
-        )
-      }
+    <div
+      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
+      onKeyDown={handleKeyPressEdit}
+      tabIndex={-1}
+    >
+      {isEdit ? (
+        <input
+          // onKeyPress={() => setIsEdit(false)}
+          value={comment}
+          className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+        />
+      ) : (
+        <span
+          className="min-w-0 pl-[5px]" /*onDoubleClick={() => setIsEdit(true)}*/
+        >
+          {comment}
+        </span>
+      )}
     </div>
   )
 }
