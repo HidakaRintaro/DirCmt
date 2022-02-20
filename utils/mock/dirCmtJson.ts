@@ -4,7 +4,8 @@ export const dirCmtJson: DirCmt[] = [
   {
     name: 'project',
     type: 'directory',
-    comment: '仮のプロジェクトディレクトリのトップ',
+    comment:
+      '仮のプロジェクトディレクトリのトップ.仮のプロジェクトディレクトリのトップ.仮のプロジェクトディレクトリのトップ.仮のプロジェクトディレクトリのトップ.仮のプロジェクトディレクトリのトップ.',
     children: [
       {
         name: 'app',
@@ -52,5 +53,10 @@ export const dirCmtJson: DirCmt[] = [
         type: 'file',
       },
     ],
+  },
+  {
+    name: 'sample.txt',
+    type: 'file',
+    comment: 'test file',
   },
 ]
