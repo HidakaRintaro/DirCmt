@@ -60,7 +60,7 @@ export const SplitPaneLeft: React.FC<SplitPaneLeftProps> = ({ children }) => {
 }
 
 export const SplitPaneRight: React.FC<SplitPaneRightProps> = ({ children }) => {
-  return <div className="flex-1">{children}</div>
+  return <div className="flex-1 overflow-x-hidden">{children}</div>
 }
 
 export const SplitPane: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -92,7 +92,7 @@ export const SplitPane: React.FC<{ children: ReactNode }> = ({ children }) => {
   })
 
   return (
-    <div className="mt-[1px] flex h-full w-full">
+    <div className="mt-[1px] flex h-[calc(100%-1px)] w-full">
       <SplitPaneContext.Provider
         value={{ clientWidth, setClientWidth, onMouseHoldDown }}
       >

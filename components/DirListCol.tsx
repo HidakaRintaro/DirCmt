@@ -75,7 +75,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { comment, path } = props
   return (
-    <div className="flex h-8 w-full items-center rounded-r-md px-2 hover:bg-orange-100 ">
+    <div className="flex h-8 w-full items-center overflow-x-scroll whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100 ">
       {
         /*isEdit*/ false ? (
           <input
