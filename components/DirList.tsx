@@ -1,4 +1,3 @@
-import { dirCmtJson } from 'utils/mock/dirCmtJson'
 import {
   Divider,
   SplitPane,
@@ -6,14 +5,15 @@ import {
   SplitPaneRight,
 } from 'components/SplitPane'
 import { DirListCol } from 'components/DirListCol'
+import { useRecoilValue } from 'recoil'
+import { dirCmtState } from 'store/atoms/dirCmtAtom'
 
 export const DirList: React.FC = () => {
-  // TODO: 仮データ、後データ
-  const data = dirCmtJson
+  const dirCmtList = useRecoilValue(dirCmtState)
   return (
     <SplitPane>
       <SplitPaneLeft>
-        {dirCmtJson.map((dirCmt, index) => (
+        {dirCmtList.map((dirCmt, index) => (
           <DirListCol
             key={index}
             type="name"
@@ -25,7 +25,7 @@ export const DirList: React.FC = () => {
       </SplitPaneLeft>
       <Divider />
       <SplitPaneRight>
-        {dirCmtJson.map((dirCmt, index) => (
+        {dirCmtList.map((dirCmt, index) => (
           <DirListCol
             key={index}
             type="comment"
