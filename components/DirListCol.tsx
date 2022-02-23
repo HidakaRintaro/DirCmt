@@ -8,11 +8,12 @@ import {
   useEffect,
   useRef,
 } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { commentState } from 'store/atoms/uiDirList/commentAtom'
 import { isEditState } from 'store/atoms/uiDirList/isEditAtom'
 import { isOpenState } from 'store/atoms/uiDirList/isOpenAtom'
 import { nameState } from 'store/atoms/uiDirList/nameAtom'
+import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { DirCmt } from 'types/dirCmt'
 
 interface DirListColNameProps {
@@ -23,6 +24,7 @@ interface DirListColNameProps {
 }
 
 interface DirListColCommentProps {
+  name: string
   comment: string
   path: string
 }
@@ -36,9 +38,11 @@ interface DirListColProps {
 
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name: nowName, depth, path } = props
-  const [isOpen, setIsOpen] = useRecoilState(isOpenState(path))
-  const [isEdit, setIsEdit] = useRecoilState(isEditState('name:' + path))
-  const [name, setName] = useRecoilState(nameState(path))
+  const herePath = path + nowName + '/'
+  const [isOpen, setIsOpen] = useRecoilState(isOpenState(herePath))
+  const [isEdit, setIsEdit] = useRecoilState(isEditState('name:' + herePath))
+  const [name, setName] = useRecoilState(nameState(herePath))
+  const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -55,6 +59,9 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
     setName(event.target.value)
   }
+  const handleFocusRow = () => {
+    setSelectingRow(type === 'file' ? path : herePath)
+  }
 
   useEffect(() => {
     setName(nowName)
@@ -65,6 +72,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
       className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
+      onFocus={handleFocusRow}
     >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
       {type === 'file' ? (
@@ -106,9 +114,11 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 }
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
-  const { comment: nowComment, path } = props
-  const [isEdit, setIsEdit] = useRecoilState(isEditState('comment:' + path))
-  const [comment, setComment] = useRecoilState(commentState(path))
+  const { name, comment: nowComment, path } = props
+  const herePath = path + name + '/'
+  const [isEdit, setIsEdit] = useRecoilState(isEditState('comment:' + herePath))
+  const [comment, setComment] = useRecoilState(commentState(herePath))
+  const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -134,6 +144,8 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
       className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
+      onFocus={() => setSelectingRow(path)}
+      onBlur={() => setSelectingRow('./')}
     >
       {isEdit ? (
         <input
@@ -161,10 +173,14 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
           name={data.name}
           type={data.type}
           depth={depth}
-          path={herePath}
+          path={path}
         />
       ) : (
-        <DirListColComment comment={data.comment ?? ''} path={herePath} />
+        <DirListColComment
+          name={data.name}
+          comment={data.comment ?? ''}
+          path={path}
+        />
       )}
       {isOpen &&
         (data.children ?? []).map((child, index) => {
@@ -175,13 +191,14 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
                 name={child.name}
                 type={child.type}
                 depth={depth + 1}
-                path={herePath + child.name + '/'}
+                path={herePath}
               />
             ) : (
               <DirListColComment
+                name={child.name}
                 key={index}
                 comment={child.comment ?? ''}
-                path={herePath + child.name + '/'}
+                path={herePath}
               />
             )
           ) : (
