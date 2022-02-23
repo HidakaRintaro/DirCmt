@@ -13,16 +13,13 @@ interface DirSectionProps {}
 export const DirSection: React.FC<DirSectionProps> = (props) => {
   const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtState)
   const selectingRow = useRecoilValue(selectingRowState)
+  const newDirCmtList = cloneDeep(dirCmtList)
   const handleClickFolder = () => {
-    const newDirCmtList = addDirCmt(
-      selectingRow,
-      cloneDeep(dirCmtList),
-      'directory',
-    )
+    addDirCmt(selectingRow, newDirCmtList, 'directory')
     setDirCmtList(newDirCmtList)
   }
   const handleClickFile = () => {
-    const newDirCmtList = addDirCmt(selectingRow, cloneDeep(dirCmtList), 'file')
+    addDirCmt(selectingRow, newDirCmtList, 'file')
     setDirCmtList(newDirCmtList)
   }
 
