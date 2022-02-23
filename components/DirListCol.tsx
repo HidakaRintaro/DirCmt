@@ -60,7 +60,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setName(event.target.value)
   }
   const handleFocusRow = () => {
-    setSelectingRow(path)
+    setSelectingRow(type === 'file' ? path : herePath)
   }
 
   useEffect(() => {

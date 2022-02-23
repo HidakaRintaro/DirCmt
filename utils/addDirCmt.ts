@@ -22,6 +22,7 @@ const insertDirCmt = (
   const path = pathAry.shift()
   const dirCmt = dirCmtList.find((dirCmt) => dirCmt.name === path)
   if (dirCmt) {
-    insertDirCmt(dirCmt.children ?? [], pathAry, type)
+    dirCmt.children = dirCmt.children ?? []
+    insertDirCmt(dirCmt.children, pathAry, type)
   }
 }
