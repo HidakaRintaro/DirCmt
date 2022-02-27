@@ -22,8 +22,15 @@ export const dirCmtJson: DirCmt[] = [
             comment: 'index file',
           },
           {
-            name: 'main.js',
-            type: 'file',
+            name: 'samples',
+            type: 'directory',
+            children: [
+              {
+                name: 'test1.js',
+                type: 'file',
+                comment: 'testの1回目のファイル',
+              },
+            ],
           },
           {
             name: 'api',
