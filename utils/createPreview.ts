@@ -18,7 +18,7 @@ export const createPreview = (dirCmtList: DirCmt[], depth: number): string => {
     rootDirCmtList.forEach((dirCmt, index) => {
       const childrenPreview = createPreviewRow(
         dirCmt,
-        0,
+        [],
         nameLength,
         ListLength - 1 === index,
       )
@@ -31,14 +31,14 @@ export const createPreview = (dirCmtList: DirCmt[], depth: number): string => {
 
 const createPreviewRow = (
   dirCmt: DirCmt,
-  depth: number,
+  depthList: boolean[],
   nameLength: number,
   isLast: boolean,
 ): string => {
   let preview = ''
-  for (let i = 0; i < depth; i++) {
-    preview += '│   '
-  }
+  depthList.forEach((depth) => {
+    preview += depth ? '│   ' : '    '
+  })
 
   preview += (isLast ? '└── ' : '├── ') + dirCmt.name
 
@@ -53,7 +53,7 @@ const createPreviewRow = (
     dirCmt.children.forEach((childrenDirCmt, index) => {
       const childrenPreview = createPreviewRow(
         childrenDirCmt,
-        depth + 1,
+        [...depthList, !isLast],
         childrenNameLength,
         ListLength - 1 === index,
       )
