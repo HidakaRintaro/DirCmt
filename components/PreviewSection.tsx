@@ -7,8 +7,6 @@ import { useRecoilValue } from 'recoil'
 import { dirCmtState } from 'store/atoms/dirCmtAtom'
 
 export const PreviewSection: React.FC = () => {
-  // const samplePreview =
-  // '.\n├── app      ----> application core codes\n│   ├── app      ----> collection of dependency injected\n│   ├── app      ----> collection of dependency injected\n│   ├── config   ----> config\n│   ├── domain   ----> domain layer, core business logics\n│   ├── handler  ----> (interface layer & application layer), request handlers\n│   └── dao      ----> (infrastructure layer), implementation of domain/repository\n│\n└── ddl      ----> DB definition master'
   const dirCmtList = useRecoilValue(dirCmtState)
   const preview = dirCmtList.length === 0 ? '' : createPreview(dirCmtList, 0)
   return (
@@ -20,8 +18,8 @@ export const PreviewSection: React.FC = () => {
           size="auto"
         />
       </div>
-      <div className="group relative h-full">
-        <div className="absolute top-1 right-0 z-50 flex items-center gap-2">
+      <div className="group flex-1 overflow-auto">
+        <div className="sticky top-6 z-50 flex h-0 items-center justify-end gap-2">
           <div className="hidden group-hover:block">
             <Tooltip text="コピーしました" />
           </div>
@@ -29,7 +27,7 @@ export const PreviewSection: React.FC = () => {
             <CopyButton text={preview} />
           </div>
         </div>
-        <pre className="h-full flex-1 overflow-scroll px-2 font-mono text-gray-100">
+        <pre className="overflow-auto px-2 font-mono text-gray-100">
           {preview}
         </pre>
       </div>
