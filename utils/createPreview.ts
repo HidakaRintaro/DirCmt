@@ -14,8 +14,14 @@ export const createPreview = (dirCmtList: DirCmt[], depth: number): string => {
 
   if (rootDirCmtList !== undefined) {
     const nameLength = maxNameLength(rootDirCmtList)
-    rootDirCmtList.forEach((dirCmt) => {
-      const childrenPreview = createPreviewRow(dirCmt, 0, nameLength)
+    const ListLength = rootDirCmtList.length
+    rootDirCmtList.forEach((dirCmt, index) => {
+      const childrenPreview = createPreviewRow(
+        dirCmt,
+        0,
+        nameLength,
+        ListLength - 1 === index,
+      )
       preview += '\n' + childrenPreview
     })
   }
@@ -27,13 +33,14 @@ const createPreviewRow = (
   dirCmt: DirCmt,
   depth: number,
   nameLength: number,
+  isLast: boolean,
 ): string => {
   let preview = ''
   for (let i = 0; i < depth; i++) {
     preview += '│   '
   }
 
-  preview += '├── ' + dirCmt.name
+  preview += (isLast ? '└── ' : '├── ') + dirCmt.name
 
   if (dirCmt.comment) {
     const repeatCnt = nameLength - dirCmt.name.length
@@ -42,12 +49,13 @@ const createPreviewRow = (
 
   if (dirCmt.children !== undefined) {
     const childrenNameLength = maxNameLength(dirCmt.children)
-
-    dirCmt.children.forEach((childrenDirCmt) => {
+    const ListLength = dirCmt.children.length
+    dirCmt.children.forEach((childrenDirCmt, index) => {
       const childrenPreview = createPreviewRow(
         childrenDirCmt,
         depth + 1,
         childrenNameLength,
+        ListLength - 1 === index,
       )
       preview += '\n' + childrenPreview
     })
