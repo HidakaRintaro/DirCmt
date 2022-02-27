@@ -61,6 +61,13 @@ const createPreviewRow = (
     })
   }
 
+  if (isLast && depthList[depthList.length - 1]) {
+    preview += '\n'
+    depthList.forEach((depth) => {
+      preview += depth ? '│   ' : '    '
+    })
+  }
+
   return preview
 }
 
