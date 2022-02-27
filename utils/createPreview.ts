@@ -36,7 +36,8 @@ const createPreviewRow = (
   preview += '├── ' + dirCmt.name
 
   if (dirCmt.comment) {
-    preview += '  ----- ' + dirCmt.comment
+    const repeatCnt = nameLength - dirCmt.name.length
+    preview += ' '.repeat(repeatCnt) + '  ----- ' + dirCmt.comment
   }
 
   if (dirCmt.children !== undefined) {
