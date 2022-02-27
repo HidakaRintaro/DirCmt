@@ -54,9 +54,9 @@ export const dirCmtJson: DirCmt[] = [
       },
     ],
   },
-  {
-    name: 'sample.txt',
-    type: 'file',
-    comment: 'test file',
-  },
+  // {
+  //   name: 'sample.txt',
+  //   type: 'file',
+  //   comment: 'test file',
+  // },
 ]
