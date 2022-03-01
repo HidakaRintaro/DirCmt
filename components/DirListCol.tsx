@@ -1,6 +1,7 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
+import { cloneDeep } from 'lodash'
 import {
   ChangeEventHandler,
   FocusEventHandler,
@@ -10,12 +11,14 @@ import {
 } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
+import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
 import { commentSelector } from 'store/selectors/uiDirList/commentSelector'
 import { isEditCommentSelector } from 'store/selectors/uiDirList/isEditCommentSelector'
 import { isEditNameSelector } from 'store/selectors/uiDirList/isEditNameSelector'
 import { isOpenSelector } from 'store/selectors/uiDirList/isOpenSelector'
 import { nameSelector } from 'store/selectors/uiDirList/nameSelector'
 import { DirCmt } from 'types/dirCmt'
+import { fixedName } from 'utils/fixedName'
 
 interface DirListColNameProps {
   type: 'file' | 'directory'
@@ -40,10 +43,11 @@ interface DirListColProps {
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name: nowName, depth, path } = props
   const herePath = path + nowName + '/'
+  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
   const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
   const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
   const [name, setName] = useRecoilState(nameSelector(herePath))
-  const setSelectingRow = useSetRecoilState(selectingRowState)
+  const [selectingRow, setSelectingRow] = useRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -55,13 +59,38 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setName(event.target.value)
   }
   const handleBlurNameFixed: FocusEventHandler<HTMLInputElement> = () => {
-    // TODO: 名前が空の場合は保存できないのでエラーを表示する
+    const { err, res: newDirCmtList } = fixedName(
+      name,
+      cloneDeep(dirCmtList),
+      selectingRow,
+    )
+
+    if (err || !newDirCmtList) {
+      if (inputRef && inputRef.current) inputRef.current?.focus()
+      // TODO エラーの時の処理を追加する
+      return
+    }
     setIsEdit(false)
+    setDirCmtList(newDirCmtList)
   }
   const handleKeyPressNameFixed: KeyboardEventHandler<HTMLInputElement> = (
     event,
   ) => {
-    if (event.key == 'Enter') setIsEdit(false)
+    if (event.key == 'Enter') {
+      const { err, res: newDirCmtList } = fixedName(
+        name,
+        cloneDeep(dirCmtList),
+        selectingRow,
+      )
+
+      if (err || !newDirCmtList) {
+        if (inputRef && inputRef.current) inputRef.current?.focus()
+        // TODO エラーの時の処理を追加する
+        return
+      }
+      setIsEdit(false)
+      setDirCmtList(newDirCmtList)
+    }
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
