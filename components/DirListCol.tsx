@@ -47,7 +47,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
   const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
   const [name, setName] = useRecoilState(nameSelector(herePath))
-  const [selectingRow, setSelectingRow] = useRecoilState(selectingRowState)
+  const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -62,7 +62,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     const { err, res: newDirCmtList } = fixedName(
       name,
       cloneDeep(dirCmtList),
-      selectingRow,
+      herePath,
     )
 
     if (err || !newDirCmtList) {
@@ -80,7 +80,7 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
       const { err, res: newDirCmtList } = fixedName(
         name,
         cloneDeep(dirCmtList),
-        selectingRow,
+        herePath,
       )
 
       if (err || !newDirCmtList) {
