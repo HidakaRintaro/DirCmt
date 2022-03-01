@@ -1,20 +1,26 @@
 import { ChevronIcon } from 'icons/ChevronIcon'
 import { FileIcon } from 'icons/FileIcon'
 import { FolderIcon } from 'icons/FolderIcon'
+import { cloneDeep } from 'lodash'
 import {
   ChangeEventHandler,
   FocusEventHandler,
   KeyboardEventHandler,
   useEffect,
   useRef,
+  useState,
 } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { commentState } from 'store/atoms/uiDirList/commentAtom'
-import { isEditState } from 'store/atoms/uiDirList/isEditAtom'
-import { isOpenState } from 'store/atoms/uiDirList/isOpenAtom'
-import { nameState } from 'store/atoms/uiDirList/nameAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
+import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
+import { commentSelector } from 'store/selectors/uiDirList/commentSelector'
+import { isEditCommentSelector } from 'store/selectors/uiDirList/isEditCommentSelector'
+import { isEditNameSelector } from 'store/selectors/uiDirList/isEditNameSelector'
+import { isOpenSelector } from 'store/selectors/uiDirList/isOpenSelector'
+import { nameSelector } from 'store/selectors/uiDirList/nameSelector'
 import { DirCmt } from 'types/dirCmt'
+import { fixedComment } from 'utils/fixedComment'
+import { fixedName } from 'utils/fixedName'
 
 interface DirListColNameProps {
   type: 'file' | 'directory'
@@ -38,10 +44,11 @@ interface DirListColProps {
 
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name: nowName, depth, path } = props
-  const herePath = path + nowName + '/'
-  const [isOpen, setIsOpen] = useRecoilState(isOpenState(herePath))
-  const [isEdit, setIsEdit] = useRecoilState(isEditState('name:' + herePath))
-  const [name, setName] = useRecoilState(nameState(herePath))
+  const [herePath, setHerePath] = useState(path + nowName + '/')
+  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
+  const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
+  const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
+  const [name, setName] = useRecoilState(nameSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -49,15 +56,43 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
     event.currentTarget.blur()
-    // TODO: フォーカスが当たらない
-    inputRef.current?.focus()
-  }
-  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
-    // TODO: 名前が空の場合は保存できないのでエラーを表示する
-    setIsEdit(false)
   }
   const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
     setName(event.target.value)
+  }
+  const handleBlurNameFixed: FocusEventHandler<HTMLInputElement> = () => {
+    const { err, res: newDirCmtList } = fixedName(
+      name,
+      cloneDeep(dirCmtList),
+      herePath,
+    )
+
+    if (err || !newDirCmtList) {
+      if (inputRef && inputRef.current) inputRef.current?.focus()
+      // TODO エラーの時の処理を追加する
+      return
+    }
+    setIsEdit(false)
+    setDirCmtList(newDirCmtList)
+  }
+  const handleKeyPressNameFixed: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    if (event.key == 'Enter') {
+      const { err, res: newDirCmtList } = fixedName(
+        name,
+        cloneDeep(dirCmtList),
+        herePath,
+      )
+
+      if (err || !newDirCmtList) {
+        if (inputRef && inputRef.current) inputRef.current?.focus()
+        // TODO エラーの時の処理を追加する
+        return
+      }
+      setIsEdit(false)
+      setDirCmtList(newDirCmtList)
+    }
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
@@ -66,6 +101,15 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
   useEffect(() => {
     setName(nowName)
   }, [])
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) inputRef.current.focus()
+  })
+
+  useEffect(() => {
+    setHerePath(path + nowName + '/')
+    setName(nowName)
+  }, [nowName, path, setName])
 
   return (
     <div
@@ -101,7 +145,8 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
           <input
             value={name}
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-            onBlur={handleBlurEdit}
+            onBlur={handleBlurNameFixed}
+            onKeyPress={handleKeyPressNameFixed}
             onChange={handleChangeName}
             ref={inputRef}
           />
@@ -115,9 +160,10 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { name, comment: nowComment, path } = props
-  const herePath = path + name + '/'
-  const [isEdit, setIsEdit] = useRecoilState(isEditState('comment:' + herePath))
-  const [comment, setComment] = useRecoilState(commentState(herePath))
+  const [herePath, setHerePath] = useState(path + name + '/')
+  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
+  const [isEdit, setIsEdit] = useRecoilState(isEditCommentSelector(herePath))
+  const [comment, setComment] = useRecoilState(commentSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -125,19 +171,57 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     if (event.key !== 'Enter') return
     setIsEdit(true)
     event.currentTarget.blur()
-    // TODO: フォーカスが当たらない
-    inputRef.current?.focus()
-  }
-  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
-    setIsEdit(false)
   }
   const handleChangeComment: ChangeEventHandler<HTMLInputElement> = (event) => {
     setComment(event.target.value)
+  }
+  const handleBlurCommentFixed: FocusEventHandler<HTMLInputElement> = () => {
+    const { err, res: newDirCmtList } = fixedComment(
+      comment,
+      cloneDeep(dirCmtList),
+      herePath,
+    )
+
+    if (err || !newDirCmtList) {
+      if (inputRef && inputRef.current) inputRef.current?.focus()
+      // TODO エラーの時の処理を追加する
+      return
+    }
+    setIsEdit(false)
+    setDirCmtList(newDirCmtList)
+  }
+  const handleKeyPressCommentFixed: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    if (event.key == 'Enter') {
+      const { err, res: newDirCmtList } = fixedComment(
+        comment,
+        cloneDeep(dirCmtList),
+        herePath,
+      )
+
+      if (err || !newDirCmtList) {
+        if (inputRef && inputRef.current) inputRef.current?.focus()
+        // TODO エラーの時の処理を追加する
+        return
+      }
+      setIsEdit(false)
+      setDirCmtList(newDirCmtList)
+    }
   }
 
   useEffect(() => {
     setComment(nowComment)
   }, [])
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) inputRef.current.focus()
+  })
+
+  useEffect(() => {
+    setHerePath(path + name + '/')
+    setComment(nowComment)
+  }, [name, nowComment, path, setComment])
 
   return (
     <div
@@ -151,7 +235,8 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
         <input
           value={comment}
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-          onBlur={handleBlurEdit}
+          onBlur={handleBlurCommentFixed}
+          onKeyPress={handleKeyPressCommentFixed}
           onChange={handleChangeComment}
           ref={inputRef}
         />
@@ -165,7 +250,7 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 export const DirListCol: React.FC<DirListColProps> = (props) => {
   const { type, data, path, depth } = props
   const herePath = path + data.name + '/'
-  const isOpen = useRecoilValue(isOpenState(herePath))
+  const isOpen = useRecoilValue(isOpenSelector(herePath))
   return (
     <>
       {type === 'name' ? (

@@ -1,6 +1,6 @@
 import { DirCmt } from 'types/dirCmt'
 
-export const createPreview = (dirCmtList: DirCmt[], depth: number): string => {
+export const createPreview = (dirCmtList: DirCmt[]): string => {
   let preview = '.'
   let rootDirCmtList: DirCmt[] | undefined = dirCmtList
   if (dirCmtList.length === 1) {

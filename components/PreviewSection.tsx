@@ -5,10 +5,14 @@ import { Tooltip } from 'components/Tooltip'
 import { createPreview } from 'utils/createPreview'
 import { useRecoilValue } from 'recoil'
 import { dirCmtState } from 'store/atoms/dirCmtAtom'
+import { useEffect, useState } from 'react'
 
 export const PreviewSection: React.FC = () => {
   const dirCmtList = useRecoilValue(dirCmtState)
-  const preview = dirCmtList.length === 0 ? '' : createPreview(dirCmtList, 0)
+  const [preview, setPreview] = useState('')
+  useEffect(() => {
+    setPreview(dirCmtList.length === 0 ? '' : createPreview(dirCmtList))
+  }, [dirCmtList])
   return (
     <div className="mx-auto mb-8 flex h-96 flex-col divide-y-2 divide-gray-300 rounded-lg bg-gray-800 py-2 px-4 drop-shadow-lg">
       <div className="mb-2 flex">
