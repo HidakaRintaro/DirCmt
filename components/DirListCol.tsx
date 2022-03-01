@@ -51,12 +51,17 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setIsEdit(true)
     event.currentTarget.blur()
   }
-  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
+  const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setName(event.target.value)
+  }
+  const handleBlurNameFixed: FocusEventHandler<HTMLInputElement> = () => {
     // TODO: 名前が空の場合は保存できないのでエラーを表示する
     setIsEdit(false)
   }
-  const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setName(event.target.value)
+  const handleKeyPressNameFixed: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    if (event.key == 'Enter') setIsEdit(false)
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
@@ -104,7 +109,8 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
           <input
             value={name}
             className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-            onBlur={handleBlurEdit}
+            onBlur={handleBlurNameFixed}
+            onKeyPress={handleKeyPressNameFixed}
             onChange={handleChangeName}
             ref={inputRef}
           />
@@ -129,13 +135,17 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     setIsEdit(true)
     event.currentTarget.blur()
   }
-  const handleBlurEdit: FocusEventHandler<HTMLInputElement> = () => {
-    setIsEdit(false)
-  }
   const handleChangeComment: ChangeEventHandler<HTMLInputElement> = (event) => {
     setComment(event.target.value)
   }
-
+  const handleBlurCommentFixed: FocusEventHandler<HTMLInputElement> = () => {
+    setIsEdit(false)
+  }
+  const handleKeyPressCommentFixed: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    if (event.key == 'Enter') setIsEdit(false)
+  }
   useEffect(() => {
     setComment(nowComment)
   }, [])
@@ -156,7 +166,8 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
         <input
           value={comment}
           className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-          onBlur={handleBlurEdit}
+          onBlur={handleBlurCommentFixed}
+          onKeyPress={handleKeyPressCommentFixed}
           onChange={handleChangeComment}
           ref={inputRef}
         />
