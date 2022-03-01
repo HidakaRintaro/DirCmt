@@ -8,6 +8,7 @@ import {
   KeyboardEventHandler,
   useEffect,
   useRef,
+  useState,
 } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
@@ -42,7 +43,7 @@ interface DirListColProps {
 
 const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const { type, name: nowName, depth, path } = props
-  const herePath = path + nowName + '/'
+  const [herePath, setHerePath] = useState(path + nowName + '/')
   const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
   const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
   const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
@@ -103,6 +104,11 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
   useEffect(() => {
     if (inputRef && inputRef.current) inputRef.current.focus()
   })
+
+  useEffect(() => {
+    setHerePath(path + nowName + '/')
+    setName(nowName)
+  }, [nowName, path, setName])
 
   return (
     <div
