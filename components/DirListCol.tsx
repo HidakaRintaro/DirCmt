@@ -19,6 +19,7 @@ import { isEditNameSelector } from 'store/selectors/uiDirList/isEditNameSelector
 import { isOpenSelector } from 'store/selectors/uiDirList/isOpenSelector'
 import { nameSelector } from 'store/selectors/uiDirList/nameSelector'
 import { DirCmt } from 'types/dirCmt'
+import { fixedComment } from 'utils/fixedComment'
 import { fixedName } from 'utils/fixedName'
 
 interface DirListColNameProps {
@@ -159,7 +160,8 @@ const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
 const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const { name, comment: nowComment, path } = props
-  const herePath = path + name + '/'
+  const [herePath, setHerePath] = useState(path + name + '/')
+  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
   const [isEdit, setIsEdit] = useRecoilState(isEditCommentSelector(herePath))
   const [comment, setComment] = useRecoilState(commentSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
@@ -174,13 +176,40 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     setComment(event.target.value)
   }
   const handleBlurCommentFixed: FocusEventHandler<HTMLInputElement> = () => {
+    const { err, res: newDirCmtList } = fixedComment(
+      comment,
+      cloneDeep(dirCmtList),
+      herePath,
+    )
+
+    if (err || !newDirCmtList) {
+      if (inputRef && inputRef.current) inputRef.current?.focus()
+      // TODO エラーの時の処理を追加する
+      return
+    }
     setIsEdit(false)
+    setDirCmtList(newDirCmtList)
   }
   const handleKeyPressCommentFixed: KeyboardEventHandler<HTMLInputElement> = (
     event,
   ) => {
-    if (event.key == 'Enter') setIsEdit(false)
+    if (event.key == 'Enter') {
+      const { err, res: newDirCmtList } = fixedComment(
+        comment,
+        cloneDeep(dirCmtList),
+        herePath,
+      )
+
+      if (err || !newDirCmtList) {
+        if (inputRef && inputRef.current) inputRef.current?.focus()
+        // TODO エラーの時の処理を追加する
+        return
+      }
+      setIsEdit(false)
+      setDirCmtList(newDirCmtList)
+    }
   }
+
   useEffect(() => {
     setComment(nowComment)
   }, [])
@@ -188,6 +217,11 @@ const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   useEffect(() => {
     if (inputRef && inputRef.current) inputRef.current.focus()
   })
+
+  useEffect(() => {
+    setHerePath(path + name + '/')
+    setComment(nowComment)
+  }, [name, nowComment, path, setComment])
 
   return (
     <div
