@@ -21,6 +21,7 @@ export const fixedName = (
   if (!dirCmt) {
     return { err: 'エラーが発生しました', res: null }
   }
+  dirCmt.name = name
   return { err: null, res: dirCmtList }
 }
 
