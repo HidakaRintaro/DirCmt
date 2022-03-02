@@ -15,6 +15,7 @@ import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
 import { isEditNameSelector } from 'store/selectors/uiDirList/isEditNameSelector'
+import { isHoverSelector } from 'store/selectors/uiDirList/isHoverSelector'
 import { isOpenSelector } from 'store/selectors/uiDirList/isOpenSelector'
 import { nameSelector } from 'store/selectors/uiDirList/nameSelector'
 import { addDirCmt } from 'utils/addDirCmt'
@@ -40,6 +41,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
   const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
   const [name, setName] = useRecoilState(nameSelector(herePath))
+  const [isHover, setIsHover] = useRecoilState(isHoverSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -104,10 +106,14 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
   return (
     <div
-      className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
+      className={`flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 ${
+        isHover ? 'bg-orange-100' : ''
+      }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
       onFocus={handleFocusRow}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
       {type === 'file' ? (
