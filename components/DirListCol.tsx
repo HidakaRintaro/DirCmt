@@ -32,6 +32,7 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
         />
       ) : (
         <DirListColComment
+          type={data.type}
           name={data.name}
           comment={data.comment ?? ''}
           path={path}
@@ -62,6 +63,7 @@ export const DirListCol: React.FC<DirListColProps> = (props) => {
               />
             ) : (
               <DirListColComment
+                type={child.type}
                 name={child.name}
                 key={index}
                 comment={child.comment ?? ''}

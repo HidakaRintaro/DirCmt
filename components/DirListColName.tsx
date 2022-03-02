@@ -11,10 +11,12 @@ import {
   useEffect,
 } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
 import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
 import { isEditNameSelector } from 'store/selectors/uiDirList/isEditNameSelector'
+import { isHoverSelector } from 'store/selectors/uiDirList/isHoverSelector'
 import { isOpenSelector } from 'store/selectors/uiDirList/isOpenSelector'
 import { nameSelector } from 'store/selectors/uiDirList/nameSelector'
 import { addDirCmt } from 'utils/addDirCmt'
@@ -40,7 +42,9 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const [isOpen, setIsOpen] = useRecoilState(isOpenSelector(herePath))
   const [isEdit, setIsEdit] = useRecoilState(isEditNameSelector(herePath))
   const [name, setName] = useRecoilState(nameSelector(herePath))
+  const [isHover, setIsHover] = useRecoilState(isHoverSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
+  const [focusRow, setFocusRow] = useRecoilState(focusRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -87,6 +91,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
+    setFocusRow({ path: herePath, side: 'name' })
   }
 
   useEffect(() => {
@@ -102,12 +107,24 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setName(nowName)
   }, [nowName, path, setName])
 
+  let style = 'flex h-8 w-full items-center gap-[2px] rounded-l-md'
+  if (herePath === focusRow.path) {
+    style += ' border-[1px] border-r-0 border-orange-300 py-0 pl-0'
+    if (focusRow.side === 'name') style += ' bg-orange-100'
+  } else if (isHover) {
+    style += ' bg-gray-100 py-px pl-px'
+  } else {
+    style += ' py-px pl-px'
+  }
+
   return (
     <div
-      className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
+      className={style}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
       onFocus={handleFocusRow}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />
       {type === 'file' ? (
@@ -216,7 +233,7 @@ export const DirListColNameEdit: React.FC<DirListColNameEditProps> = (
 
   return (
     <div
-      className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
+      className="flex h-8 w-full items-center gap-[2px] rounded-l-md py-px pl-px hover:bg-orange-100"
       tabIndex={-1}
     >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />

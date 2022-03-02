@@ -6,6 +6,7 @@ interface Option {
   isEditName: boolean
   isEditComment: boolean
   isOpen: boolean
+  isHover: boolean
 }
 
 export const rowState = atomFamily<Option, string>({
@@ -16,5 +17,6 @@ export const rowState = atomFamily<Option, string>({
     isEditName: false,
     isEditComment: false,
     isOpen: false,
+    isHover: false,
   },
 })
