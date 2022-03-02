@@ -11,6 +11,7 @@ import {
   useEffect,
 } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
 import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
@@ -43,6 +44,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   const [name, setName] = useRecoilState(nameSelector(herePath))
   const [isHover, setIsHover] = useRecoilState(isHoverSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
+  const [focusRow, setFocusRow] = useRecoilState(focusRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -89,6 +91,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
+    setFocusRow(herePath)
   }
 
   useEffect(() => {
@@ -106,8 +109,12 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
 
   return (
     <div
-      className={`flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 ${
-        isHover ? 'bg-gray-100' : ''
+      className={`flex h-8 w-full items-center gap-[2px] rounded-l-md  ${
+        herePath === focusRow
+          ? 'border-[1px] border-r-0 border-orange-300 py-0 pl-0'
+          : isHover
+          ? 'bg-gray-100 py-px pl-px'
+          : 'py-px pl-px'
       }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}

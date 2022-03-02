@@ -8,6 +8,7 @@ import {
   useEffect,
 } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
+import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
 import { commentSelector } from 'store/selectors/uiDirList/commentSelector'
@@ -29,6 +30,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   const [comment, setComment] = useRecoilState(commentSelector(herePath))
   const [isHover, setIsHover] = useRecoilState(isHoverSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
+  const [focusRow, setFocusRow] = useRecoilState(focusRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -89,8 +91,12 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 
   return (
     <div
-      className={`flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2  ${
-        isHover ? 'bg-gray-100' : ''
+      className={`flex h-8 w-full items-center whitespace-nowrap rounded-r-md ${
+        herePath === focusRow
+          ? 'border-[1px] border-l-0 border-orange-300 py-0 pr-0'
+          : isHover
+          ? 'bg-gray-100 py-px pr-px'
+          : ' py-px pr-px '
       }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
