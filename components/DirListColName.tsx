@@ -107,7 +107,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   return (
     <div
       className={`flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 ${
-        isHover ? 'bg-orange-100' : ''
+        isHover ? 'bg-gray-100' : ''
       }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}

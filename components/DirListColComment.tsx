@@ -90,7 +90,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   return (
     <div
       className={`flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2  ${
-        isHover ? 'bg-orange-100' : ''
+        isHover ? 'bg-gray-100' : ''
       }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
