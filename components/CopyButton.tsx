@@ -20,7 +20,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ text }) => {
   return (
     <button
       onClick={onClickHandler}
-      className="rounded-md border-[1px] border-gray-500 bg-gray-700 p-2 text-center hover:border-gray-400 hover:bg-gray-600"
+      className="rounded-md border-[1px] border-gray-500 bg-gray-700 p-2 text-center opacity-90 hover:border-gray-400 hover:bg-gray-600"
     >
       <CopyIcon className="stroke-white stroke-2" />
     </button>
