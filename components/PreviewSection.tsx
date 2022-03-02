@@ -10,6 +10,18 @@ import { useEffect, useState } from 'react'
 export const PreviewSection: React.FC = () => {
   const dirCmtList = useRecoilValue(dirCmtState)
   const [preview, setPreview] = useState('')
+
+  const handleClickDownload = () => {
+    const blob = new Blob([preview], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'dircmt.txt'
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
   useEffect(() => {
     setPreview(dirCmtList.length === 0 ? '' : createPreview(dirCmtList))
   }, [dirCmtList])
@@ -20,6 +32,7 @@ export const PreviewSection: React.FC = () => {
           icon={<DownloadIcon className="stroke-white stroke-2" />}
           value="Download"
           size="auto"
+          onClick={handleClickDownload}
         />
       </div>
       <div className="group flex-1 overflow-auto">
