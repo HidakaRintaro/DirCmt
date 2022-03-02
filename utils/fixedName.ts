@@ -38,7 +38,10 @@ const insertDirCmt = (
   return null
 }
 
-const duplicateCheck = (dirCmtList: DirCmt[], pathAry: string[]): boolean => {
+export const duplicateCheck = (
+  dirCmtList: DirCmt[],
+  pathAry: string[],
+): boolean => {
   if (pathAry.length === 0) return true
   const path = pathAry.shift()
   const dirCmt = dirCmtList.find((dirCmt) => dirCmt.name === path)
