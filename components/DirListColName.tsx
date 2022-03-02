@@ -229,7 +229,7 @@ export const DirListColNameEdit: React.FC<DirListColNameEditProps> = (
 
   return (
     <div
-      className="flex h-8 w-full items-center gap-[2px] rounded-l-md pl-1 hover:bg-orange-100"
+      className="flex h-8 w-full items-center gap-[2px] rounded-l-md py-px pl-px hover:bg-orange-100"
       tabIndex={-1}
     >
       <div style={{ paddingLeft: 12 * depth + 'px' }} />

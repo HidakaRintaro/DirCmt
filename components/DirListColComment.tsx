@@ -128,7 +128,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 export const DirListColCommentEdit: React.FC = () => {
   return (
     <div
-      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
+      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md py-px pr-px hover:bg-orange-100"
       tabIndex={-1}
     >
       <span className="min-w-0 pl-[5px]"></span>
