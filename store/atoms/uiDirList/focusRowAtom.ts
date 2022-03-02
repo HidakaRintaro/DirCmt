@@ -1,6 +1,6 @@
 import { atom } from 'recoil'
 
-export const focusRowState = atom({
+export const focusRowState = atom<{ path: string; side: 'name' | 'comment' }>({
   key: 'uiDirList/focusRowState',
-  default: './',
+  default: { path: './', side: 'name' },
 })

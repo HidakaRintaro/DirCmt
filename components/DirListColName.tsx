@@ -91,7 +91,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
-    setFocusRow(herePath)
+    setFocusRow({ path: herePath, side: 'name' })
   }
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
   return (
     <div
       className={`flex h-8 w-full items-center gap-[2px] rounded-l-md  ${
-        herePath === focusRow
+        herePath === focusRow.path
           ? 'border-[1px] border-r-0 border-orange-300 py-0 pl-0'
           : isHover
           ? 'bg-gray-100 py-px pl-px'

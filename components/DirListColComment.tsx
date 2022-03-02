@@ -78,7 +78,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   }
   const handleFocusRow = () => {
     setSelectingRow(type === 'file' ? path : herePath)
-    setFocusRow(herePath)
+    setFocusRow({ path: herePath, side: 'comment' })
   }
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
   return (
     <div
       className={`flex h-8 w-full items-center whitespace-nowrap rounded-r-md ${
-        herePath === focusRow
+        herePath === focusRow.path
           ? 'border-[1px] border-l-0 border-orange-300 py-0 pr-0'
           : isHover
           ? 'bg-gray-100 py-px pr-px'
