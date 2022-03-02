@@ -2,25 +2,21 @@ import { FileAddIcon } from 'icons/FileAddIcon'
 import { FolderAddIcon } from 'icons/FolderAddIcon'
 import { Button } from 'components/Button'
 import { DirList } from 'components/DirList'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { dirCmtState } from 'store/atoms/dirCmtAtom'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
-import { addDirCmt } from 'utils/addDirCmt'
-import { cloneDeep } from 'lodash'
+import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 
 interface DirSectionProps {}
 
 export const DirSection: React.FC<DirSectionProps> = (props) => {
-  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtState)
   const selectingRow = useRecoilValue(selectingRowState)
-  const newDirCmtList = cloneDeep(dirCmtList)
+  const setNewRow = useSetRecoilState(newRowState)
+
   const handleClickFolder = () => {
-    addDirCmt(selectingRow, newDirCmtList, 'directory')
-    setDirCmtList(newDirCmtList)
+    setNewRow({ isShow: true, type: 'directory', selectingRow: selectingRow })
   }
   const handleClickFile = () => {
-    addDirCmt(selectingRow, newDirCmtList, 'file')
-    setDirCmtList(newDirCmtList)
+    setNewRow({ isShow: true, type: 'file', selectingRow: selectingRow })
   }
 
   return (
