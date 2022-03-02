@@ -17,13 +17,14 @@ import { isHoverSelector } from 'store/selectors/uiDirList/isHoverSelector'
 import { fixedComment } from 'utils/fixedComment'
 
 interface DirListColCommentProps {
+  type: 'file' | 'directory'
   name: string
   comment: string
   path: string
 }
 
 export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
-  const { name, comment: nowComment, path } = props
+  const { type, name, comment: nowComment, path } = props
   const [herePath, setHerePath] = useState(path + name + '/')
   const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
   const [isEdit, setIsEdit] = useRecoilState(isEditCommentSelector(herePath))
@@ -75,6 +76,10 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
       setDirCmtList(newDirCmtList)
     }
   }
+  const handleFocusRow = () => {
+    setSelectingRow(type === 'file' ? path : herePath)
+    setFocusRow(herePath)
+  }
 
   useEffect(() => {
     setComment(nowComment)
@@ -100,7 +105,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
       }`}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
-      onFocus={() => setSelectingRow(path)}
+      onFocus={handleFocusRow}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
