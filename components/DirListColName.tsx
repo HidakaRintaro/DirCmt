@@ -107,15 +107,19 @@ export const DirListColName: React.FC<DirListColNameProps> = (props) => {
     setName(nowName)
   }, [nowName, path, setName])
 
+  let style = 'flex h-8 w-full items-center gap-[2px] rounded-l-md'
+  if (herePath === focusRow.path) {
+    style += ' border-[1px] border-r-0 border-orange-300 py-0 pl-0'
+    if (focusRow.side === 'name') style += ' bg-orange-100'
+  } else if (isHover) {
+    style += ' bg-gray-100 py-px pl-px'
+  } else {
+    style += ' py-px pl-px'
+  }
+
   return (
     <div
-      className={`flex h-8 w-full items-center gap-[2px] rounded-l-md  ${
-        herePath === focusRow.path
-          ? 'border-[1px] border-r-0 border-orange-300 py-0 pl-0'
-          : isHover
-          ? 'bg-gray-100 py-px pl-px'
-          : 'py-px pl-px'
-      }`}
+      className={style}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
       onFocus={handleFocusRow}

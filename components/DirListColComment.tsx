@@ -94,15 +94,19 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     setComment(nowComment)
   }, [name, nowComment, path, setComment])
 
+  let style = 'flex h-8 w-full items-center whitespace-nowrap rounded-r-md'
+  if (herePath === focusRow.path) {
+    style += ' border-[1px] border-l-0 border-orange-300 py-0 pr-0'
+    if (focusRow.side === 'comment') style += ' bg-orange-100'
+  } else if (isHover) {
+    style += ' bg-gray-100 py-px pr-px'
+  } else {
+    style += ' py-px pr-px'
+  }
+
   return (
     <div
-      className={`flex h-8 w-full items-center whitespace-nowrap rounded-r-md ${
-        herePath === focusRow.path
-          ? 'border-[1px] border-l-0 border-orange-300 py-0 pr-0'
-          : isHover
-          ? 'bg-gray-100 py-px pr-px'
-          : ' py-px pr-px '
-      }`}
+      className={style}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
       onFocus={handleFocusRow}
