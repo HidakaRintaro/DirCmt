@@ -2,18 +2,23 @@ import { FileAddIcon } from 'icons/FileAddIcon'
 import { FolderAddIcon } from 'icons/FolderAddIcon'
 import { Button } from 'components/Button'
 import { DirList } from 'components/DirList'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 import { TrashIcon } from 'icons/TrashIcon'
 import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
+import { dirCmtState } from 'store/atoms/dirCmtAtom'
+import { deleteDirCmt } from 'utils/deleteDircmt'
+import { cloneDeep } from 'lodash'
 
 interface DirSectionProps {}
 
 export const DirSection: React.FC<DirSectionProps> = (props) => {
+  const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtState)
   const selectingRow = useRecoilValue(selectingRowState)
-  const focusRow = useRecoilValue(focusRowState)
+  const [focusRow, setFocusRow] = useRecoilState(focusRowState)
   const setNewRow = useSetRecoilState(newRowState)
+  let newDirCmtList = cloneDeep(dirCmtList)
 
   const handleClickFolder = () => {
     setNewRow({ isShow: true, type: 'directory', selectingRow: selectingRow })
@@ -22,7 +27,10 @@ export const DirSection: React.FC<DirSectionProps> = (props) => {
     setNewRow({ isShow: true, type: 'file', selectingRow: selectingRow })
   }
   const handleClickDelete = () => {
-    console.log('delete')
+    newDirCmtList = deleteDirCmt(focusRow.path, newDirCmtList)
+    console.log(newDirCmtList)
+    setDirCmtList(newDirCmtList)
+    setFocusRow({ path: './', side: 'name' })
   }
 
   return (
