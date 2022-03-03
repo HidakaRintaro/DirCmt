@@ -8,25 +8,30 @@ import {
   useEffect,
 } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
+import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
 import { selectingRowState } from 'store/atoms/uiDirList/selectingRowAtom'
 import { dirCmtSelector } from 'store/selectors/dirCmtSelector'
 import { commentSelector } from 'store/selectors/uiDirList/commentSelector'
 import { isEditCommentSelector } from 'store/selectors/uiDirList/isEditCommentSelector'
+import { isHoverSelector } from 'store/selectors/uiDirList/isHoverSelector'
 import { fixedComment } from 'utils/fixedComment'
 
 interface DirListColCommentProps {
+  type: 'file' | 'directory'
   name: string
   comment: string
   path: string
 }
 
 export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
-  const { name, comment: nowComment, path } = props
+  const { type, name, comment: nowComment, path } = props
   const [herePath, setHerePath] = useState(path + name + '/')
   const [dirCmtList, setDirCmtList] = useRecoilState(dirCmtSelector)
   const [isEdit, setIsEdit] = useRecoilState(isEditCommentSelector(herePath))
   const [comment, setComment] = useRecoilState(commentSelector(herePath))
+  const [isHover, setIsHover] = useRecoilState(isHoverSelector(herePath))
   const setSelectingRow = useSetRecoilState(selectingRowState)
+  const [focusRow, setFocusRow] = useRecoilState(focusRowState)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyPressEdit: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -71,6 +76,10 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
       setDirCmtList(newDirCmtList)
     }
   }
+  const handleFocusRow = () => {
+    setSelectingRow(type === 'file' ? path : herePath)
+    setFocusRow({ path: herePath, side: 'comment' })
+  }
 
   useEffect(() => {
     setComment(nowComment)
@@ -85,13 +94,24 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
     setComment(nowComment)
   }, [name, nowComment, path, setComment])
 
+  let style = 'flex h-8 w-full items-center whitespace-nowrap rounded-r-md'
+  if (herePath === focusRow.path) {
+    style += ' border-[1px] border-l-0 border-orange-300 py-0 pr-0'
+    if (focusRow.side === 'comment') style += ' bg-orange-100'
+  } else if (isHover) {
+    style += ' bg-gray-100 py-px pr-px'
+  } else {
+    style += ' py-px pr-px'
+  }
+
   return (
     <div
-      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
+      className={style}
       onKeyDown={handleKeyPressEdit}
       tabIndex={-1}
-      onFocus={() => setSelectingRow(path)}
-      onBlur={() => setSelectingRow('./')}
+      onFocus={handleFocusRow}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       {isEdit ? (
         <input
@@ -112,7 +132,7 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
 export const DirListColCommentEdit: React.FC = () => {
   return (
     <div
-      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md px-2 hover:bg-orange-100"
+      className="flex h-8 w-full items-center whitespace-nowrap rounded-r-md py-px pr-px hover:bg-orange-100"
       tabIndex={-1}
     >
       <span className="min-w-0 pl-[5px]"></span>
