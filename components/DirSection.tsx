@@ -8,7 +8,7 @@ import { newRowState } from 'store/atoms/uiDirList/newRowAtom'
 import { TrashIcon } from 'icons/TrashIcon'
 import { focusRowState } from 'store/atoms/uiDirList/focusRowAtom'
 import { dirCmtState } from 'store/atoms/dirCmtAtom'
-import { deleteDirCmt } from 'utils/deleteDircmt'
+import { deleteDirCmt } from 'utils/deleteDirCmt'
 import { cloneDeep } from 'lodash'
 
 interface DirSectionProps {}
