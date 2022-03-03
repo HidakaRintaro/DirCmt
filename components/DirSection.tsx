@@ -30,7 +30,6 @@ export const DirSection: React.FC<DirSectionProps> = (props) => {
   }
   const handleClickDelete = () => {
     newDirCmtList = deleteDirCmt(focusRow.path, newDirCmtList)
-    console.log(newDirCmtList)
     setDirCmtList(newDirCmtList)
     setFocusRow({ path: './', side: 'name' })
   }
