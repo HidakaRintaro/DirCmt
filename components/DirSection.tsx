@@ -22,9 +22,11 @@ export const DirSection: React.FC<DirSectionProps> = (props) => {
 
   const handleClickFolder = () => {
     setNewRow({ isShow: true, type: 'directory', selectingRow: selectingRow })
+    setFocusRow({ path: './', side: 'name' })
   }
   const handleClickFile = () => {
     setNewRow({ isShow: true, type: 'file', selectingRow: selectingRow })
+    setFocusRow({ path: './', side: 'name' })
   }
   const handleClickDelete = () => {
     newDirCmtList = deleteDirCmt(focusRow.path, newDirCmtList)
