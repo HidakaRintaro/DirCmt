@@ -206,17 +206,22 @@ export const DirListColNameEdit: React.FC<DirListColNameEditProps> = (
     event,
   ) => {
     if (event.key == 'Enter') {
-      const { err, res: newDirCmtList } = fixedName(
-        name,
-        cloneDeep(dirCmtList),
-        herePath,
-      )
-
-      if (err || !newDirCmtList) {
-        if (inputRef && inputRef.current) inputRef.current?.focus()
-        // TODO エラーの時の処理を追加する
+      if (name === '') {
+        setNewRow({ isShow: false, type: type, selectingRow: selectingRow })
         return
       }
+      // TODO 強引にインポートして処理をしているのでよしなに修正する(重複処理)
+      const pathAry = selectingRow.split('/')
+      pathAry.shift() // 先頭パスの . を削除
+      pathAry.pop() // 末尾の空文字を削除
+      if (duplicateCheck(dirCmtList, [...pathAry, name])) {
+        // TODO エラー処理をする
+        if (inputRef && inputRef.current) inputRef.current?.focus()
+        return
+      }
+      addDirCmt(selectingRow, newDirCmtList, { name: name, type: type })
+
+      setNewRow({ isShow: false, type: type, selectingRow: selectingRow })
       setIsEdit(false)
       setDirCmtList(newDirCmtList)
     }
