@@ -4,10 +4,17 @@ import { DirSection } from 'components/DirSection'
 import { Footer } from 'components/Footer'
 import { Heading } from 'components/Heading'
 import { PreviewSection } from 'components/PreviewSection'
+import { useRecoilValue } from 'recoil'
+import { isSelectNoneState } from 'store/atoms/isSelectNoneAtome'
 
 const Home: NextPage = () => {
+  const isSelectNone = useRecoilValue(isSelectNoneState)
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div
+      className={`flex min-h-screen flex-col bg-gray-50 ${
+        isSelectNone ? 'select-none' : ''
+      }`}
+    >
       <Head>
         <title>TreeDesc</title>
         <meta
