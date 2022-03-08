@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           property="og:description"
           content="ディレクトリ構成にコメントを振ることができるツールです。"
         />
-        <meta property="og:site_name" content="DirCmt" />
+        <meta property="og:site_name" content="TreeDesc" />
         <meta
           property="og:image"
           content="https://treedesc.rintaro.dev/facebook.png"
