@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Head>
-        <title>DirCmt</title>
+        <title>TreeDesc</title>
         <meta
           name="description"
           content="ディレクトリ構成にコメントを振ることができるツールです。"
