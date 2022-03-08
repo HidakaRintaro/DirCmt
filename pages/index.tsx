@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
         <meta property="og:url" content="https://treedesc.rintaro.dev/" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="DirCmt" />
+        <meta property="og:title" content="TreeDesc" />
         <meta
           property="og:description"
           content="ディレクトリ構成にコメントを振ることができるツールです。"
