@@ -8,6 +8,8 @@ import {
   useRef,
   useState,
 } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { isSelectNoneState } from 'store/atoms/isSelectNoneAtome'
 
 const SplitPaneContext = createContext(
   {} as {
@@ -70,14 +72,17 @@ export const SplitPaneRight: React.FC<SplitPaneRightProps> = ({ children }) => {
 }
 
 export const SplitPane: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const setIsSelectNone = useSetRecoilState(isSelectNoneState)
   const [clientWidth, setClientWidth] = useState<number>(150)
   const xDividerPos = useRef<number>(0)
 
   const onMouseHoldDown: MouseEventHandler<HTMLDivElement> = (event) => {
+    setIsSelectNone(true)
     xDividerPos.current = event.clientX
   }
 
   const onMouseHoldUp = () => {
+    setIsSelectNone(false)
     xDividerPos.current = 0
   }
 
