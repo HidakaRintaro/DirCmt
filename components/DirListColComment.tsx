@@ -113,18 +113,20 @@ export const DirListColComment: React.FC<DirListColCommentProps> = (props) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      {isEdit ? (
-        <input
-          value={comment}
-          className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
-          onBlur={handleBlurCommentFixed}
-          onKeyPress={handleKeyPressCommentFixed}
-          onChange={handleChangeComment}
-          ref={inputRef}
-        />
-      ) : (
-        <span className="min-w-0 pl-[5px]">{comment}</span>
-      )}
+      <div className="overflow-hidden overflow-ellipsis">
+        {isEdit ? (
+          <input
+            value={comment}
+            className="w-full rounded border-[1px] border-orange-300 px-1 outline-none"
+            onBlur={handleBlurCommentFixed}
+            onKeyPress={handleKeyPressCommentFixed}
+            onChange={handleChangeComment}
+            ref={inputRef}
+          />
+        ) : (
+          <span className="min-w-0 pl-[5px]">{comment}</span>
+        )}
+      </div>
     </div>
   )
 }

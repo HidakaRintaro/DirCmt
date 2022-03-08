@@ -61,7 +61,7 @@ export const SplitPaneRight: React.FC<SplitPaneRightProps> = ({ children }) => {
   const { clientWidth } = useContext(SplitPaneContext)
   return (
     <div style={{ width: `calc(100% - ${clientWidth}px - 5px)` }}>
-      <div className="overflow-x-auto overflow-y-visible">{children}</div>
+      <div>{children}</div>
     </div>
   )
 }
