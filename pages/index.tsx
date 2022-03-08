@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         <meta property="og:site_name" content="DirCmt" />
         <meta
           property="og:image"
-          content="https://dircmt.vercel.app/facebook.png"
+          content="https://treedesc.rintaro.dev/facebook.png"
         />
         <meta property="twitter:card" content="summary" />
         <meta property="twitter:site" content="@HidakaRintaro" />
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         />
         <meta
           property="twitter:image:src"
-          content="https://dircmt.vercel.app/twitter.png"
+          content="https://treedesc.rintaro.dev/twitter.png"
         />
       </Head>
       <header className="mt-2 text-center">
