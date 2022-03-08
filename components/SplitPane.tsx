@@ -44,7 +44,10 @@ export const SplitPaneLeft: React.FC<SplitPaneLeftProps> = ({ children }) => {
       setClientWidth(topRef.current?.clientWidth ?? 0)
       return
     }
-    if (clientWidth < 100 || clientWidth > 500) return
+    if (clientWidth < 100 || clientWidth > 500) {
+      setClientWidth(clientWidth < 100 ? 100 : 500)
+      return
+    }
 
     topRef.current!.style.minWidth = clientWidth + 'px'
     topRef.current!.style.maxWidth = clientWidth + 'px'
@@ -61,7 +64,7 @@ export const SplitPaneRight: React.FC<SplitPaneRightProps> = ({ children }) => {
   const { clientWidth } = useContext(SplitPaneContext)
   return (
     <div style={{ width: `calc(100% - ${clientWidth}px - 5px)` }}>
-      <div className="overflow-x-auto overflow-y-visible">{children}</div>
+      <div>{children}</div>
     </div>
   )
 }
