@@ -44,7 +44,10 @@ export const SplitPaneLeft: React.FC<SplitPaneLeftProps> = ({ children }) => {
       setClientWidth(topRef.current?.clientWidth ?? 0)
       return
     }
-    if (clientWidth < 100 || clientWidth > 500) return
+    if (clientWidth < 100 || clientWidth > 500) {
+      setClientWidth(clientWidth < 100 ? 100 : 500)
+      return
+    }
 
     topRef.current!.style.minWidth = clientWidth + 'px'
     topRef.current!.style.maxWidth = clientWidth + 'px'
