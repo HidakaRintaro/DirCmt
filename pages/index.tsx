@@ -42,9 +42,11 @@ const Home: NextPage = () => {
           content="ディレクトリ構成にコメントを振ることができるツールです。"
         />
         <meta
-          property="twitter:image:src"
+          property="twitter:image"
           content="https://treedesc.rintaro.dev/twitter.png"
         />
+        <meta property="twitter:url" content="https://treedesc.rintaro.dev" />
+        <meta property="twitter:title" content="TreeDesc" />
 
         {/* Global site tag (gtag.js) - Google Analytics */}
         <script
