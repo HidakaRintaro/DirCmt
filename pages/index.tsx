@@ -6,6 +6,7 @@ import { Heading } from 'components/Heading'
 import { PreviewSection } from 'components/PreviewSection'
 import { useRecoilValue } from 'recoil'
 import { isSelectNoneState } from 'store/atoms/isSelectNoneAtome'
+import { GA_TRACKING_ID } from 'utils/gtag'
 
 const Home: NextPage = () => {
   const isSelectNone = useRecoilValue(isSelectNoneState)
@@ -43,6 +44,24 @@ const Home: NextPage = () => {
         <meta
           property="twitter:image:src"
           content="https://treedesc.rintaro.dev/twitter.png"
+        />
+
+        {/* Global site tag (gtag.js) - Google Analytics */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_TRACKING_ID}', {
+            page_path: window.location.pathname,
+          });
+          `,
+          }}
         />
       </Head>
       <header className="mt-2 text-center">
