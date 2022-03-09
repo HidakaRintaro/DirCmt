@@ -12,7 +12,8 @@ export const PreviewSection: React.FC = () => {
   const [preview, setPreview] = useState('')
 
   const handleClickDownload = () => {
-    const blob = new Blob([preview], { type: 'text/plain' })
+    const bom = new Uint8Array([0xef, 0xbb, 0xbf])
+    const blob = new Blob([bom, preview], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
